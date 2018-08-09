@@ -38,8 +38,8 @@ public class SceneSetup : MonoBehaviour {
 
 	private void SetupPegs () {
 
-		int horizPegs = 18;
-		int vertPegs = 9;
+		int horizPegs = 12;
+		int vertPegs = 6;
 		float hSpacing = 1/(horizPegs+1.0f);
 		float vSpacing = 1/(vertPegs+1.0f);
 

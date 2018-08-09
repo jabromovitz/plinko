@@ -1,16 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 using UnityEngine;
 using Rewired;
 
 public class HandMan : MonoBehaviour {
 
+	public class OnPegPulled : UnityEvent<GameObject> { };
 	 public ArmGenerator.Arm hand;
 	 private int handSpeed = 150;
 	 private float seekMult = 5.0f;
 	 private string hAxis = "Horizontal ";
 	 private string vAxis = "Vertical ";
 	 private string grab = "Grab ";
+	 private string pull = "Pull ";
 	 private bool isHoldingPeg = false;
 	 private bool seekPeg = false;
 	 private Vector3 pegTarget;
@@ -18,14 +21,20 @@ public class HandMan : MonoBehaviour {
 	 private Vector3 seekScale;
 	 public Rewired.Player player;
 	 public Globals.Team teamId;
+	 private Coroutine pullPegCo;
+	 public static OnPegPulled pegPulled;
+	 private GameObject heldPeg;
+	 
 	// Use this for initialization
 	void Start () {
 
 		hAxis += ArmGenerator.Arm.Left == hand ? "Left" : "Right";
 		vAxis += ArmGenerator.Arm.Left == hand ? "Left" : "Right";
 		grab += ArmGenerator.Arm.Left == hand ? "Left" : "Right";
+		pull += ArmGenerator.Arm.Left == hand ? "Left" : "Right";
 		origScale = transform.localScale;
 		seekScale = transform.localScale * 1.5f;
+		pegPulled = new OnPegPulled();
 	}
 	
 	// Update is called once per frame
@@ -41,13 +50,24 @@ public class HandMan : MonoBehaviour {
 
 	void Update () {
 
-		if(isHoldingPeg && !player.GetButton(grab)) {
+		// Grab peg
+		if(isHoldingPeg && player.GetButtonUp(grab)) {
 			isHoldingPeg = false;
 			Destroy(this.gameObject.GetComponent<HingeJoint2D>());
 		} else if (!isHoldingPeg && player.GetButtonDown(grab)) {
 			StartPegSeek(FindCloestPeg());
-		} else if (!isHoldingPeg && ! player.GetButton(grab)) {
+		} else if (!isHoldingPeg && player.GetButtonUp(grab)) {
 			StopPegSeek();
+		}
+
+		// Pull peg
+		if (isHoldingPeg) {
+			if (player.GetButtonDown(pull)) {
+				pullPegCo = StartCoroutine( PullPeg() );
+			}
+			if (player.GetButtonUp(pull)) {
+				StopCoroutine(pullPegCo);
+			}
 		}
 
 		if (seekPeg) {
@@ -59,10 +79,13 @@ public class HandMan : MonoBehaviour {
 
 	void OnTriggerStay2D(Collider2D other)
 	{
+		// Grab a peg
 		if (other.gameObject.CompareTag("Peg")) {
 			if (!isHoldingPeg && player.GetButton(grab)) {
+				StopPegSeek();
 				isHoldingPeg = true;
 				HingeJoint2D hinge = gameObject.AddComponent<HingeJoint2D>() as HingeJoint2D;
+				heldPeg = other.gameObject;
 				hinge.connectedBody = other.gameObject.GetComponent<Rigidbody2D>();
 			}
 		} 
@@ -70,6 +93,7 @@ public class HandMan : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
+		// Turn ball your teams color
 		if (other.gameObject.tag == "Puck") {
 			Ball ball = other.gameObject.GetComponent<Ball>();
 			ball.SetTeam(teamId);
@@ -115,5 +139,17 @@ public class HandMan : MonoBehaviour {
 	public void StopPegSeek () {
 		seekPeg = false;
 		transform.localScale = origScale;
+	}
+
+	IEnumerator PullPeg () {
+
+		yield return new WaitForSeconds (Globals.PEG_PULL_TIME);
+
+		isHoldingPeg = false;
+		Destroy(this.gameObject.GetComponent<HingeJoint2D>());
+		pegPulled.Invoke(heldPeg);
+
+
+
 	}
 }
