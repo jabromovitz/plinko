@@ -33,7 +33,8 @@ public class Arm : MonoBehaviour {
 		//lineRenderer.SetPosition(1, subArms[0].position);
 
 		int cnt = lineRenderer.positionCount;
-		for (int i = 0; i < cnt - 2; i++) { 
+		for (int i = 0; i < cnt - 2; i++) {
+			
 			lineRenderer.SetPosition(i, subArms[i].GetChild(0).position);
 			lineRenderer.SetPosition(i + 1, subArms[i + 1].GetChild(0).position);
 		}

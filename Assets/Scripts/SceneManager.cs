@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SceneManager : MonoBehaviour {
 
-	public const int BALLS_PER_DROP = 15;
+	public const int BALLS_PER_DROP = 50;
 	public const float BALL_DROP_FREQ = 1.0f;
 	public GameObject puckPrefab;
 	public Text leftScoreText;
@@ -20,10 +20,18 @@ public class SceneManager : MonoBehaviour {
 	private const float MAX_BALL_DROPPER_SPEED = 30;
 	private const float BALL_DROPPER_WAIT_TIME = 3.0f;
 
+	/// <summary>
+	/// Awake is called when the script instance is being loaded.
+	/// </summary>
+	void Awake()
+	{
+		HandMan.pegPulled.AddListener(RemovePeg);
+	}
+	
 	void Start () {
 		Goal.OnGoalScored += GoalScored;
 		StartCoroutine(MoveBallDropper());
-		HandMan.pegPulled.AddListener(RemovePeg);
+		
 	}
 	
 	// Update is called once per frame

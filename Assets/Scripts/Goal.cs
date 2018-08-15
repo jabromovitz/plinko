@@ -32,7 +32,7 @@ public class Goal : MonoBehaviour {
 	{
 		if (other.gameObject.tag == "Puck") {
 			Ball ball = other.GetComponent<Ball>();
-			if(team != ball.team && ball.team != Globals.Team.NONE) {
+			if(team == ball.team && ball.team != Globals.Team.NONE) {
 				OnGoalScored(ball.team);
 				StartCoroutine( Flasher() );
 			}

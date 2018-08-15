@@ -56,8 +56,8 @@ GameObject:
   - component: {fileID: 4776051928197564}
   - component: {fileID: 58100202930372230}
   m_Layer: 0
-  m_Name: Body Hitter
-  m_TagString: Untagged
+  m_Name: Team Hitter
+  m_TagString: TeamHitter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -129,7 +129,7 @@ CircleCollider2D:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1843927706020464}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0

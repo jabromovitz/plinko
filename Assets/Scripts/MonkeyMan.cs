@@ -40,6 +40,12 @@ public class MonkeyMan : MonoBehaviour {
 				}
 			}
 		}
+
+		foreach(Transform child in transform) {
+    		if(child.tag == "TeamHitter")
+        		child.gameObject.layer = LayerMask.NameToLayer( Globals.TEAM_NAMES[(int)teamId] );
+		}
+
 	}
 	
 	// Update is called once per frame

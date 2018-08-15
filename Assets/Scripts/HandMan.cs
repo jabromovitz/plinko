@@ -6,6 +6,7 @@ using Rewired;
 
 public class HandMan : MonoBehaviour {
 
+	[System.Serializable]
 	public class OnPegPulled : UnityEvent<GameObject> { };
 	 public ArmGenerator.Arm hand;
 	 private int handSpeed = 150;
@@ -22,19 +23,27 @@ public class HandMan : MonoBehaviour {
 	 public Rewired.Player player;
 	 public Globals.Team teamId;
 	 private Coroutine pullPegCo;
-	 public static OnPegPulled pegPulled;
+	 public static OnPegPulled pegPulled = new OnPegPulled();
 	 private GameObject heldPeg;
 	 
 	// Use this for initialization
 	void Start () {
 
+		// Are we the left or right hand?
 		hAxis += ArmGenerator.Arm.Left == hand ? "Left" : "Right";
 		vAxis += ArmGenerator.Arm.Left == hand ? "Left" : "Right";
 		grab += ArmGenerator.Arm.Left == hand ? "Left" : "Right";
 		pull += ArmGenerator.Arm.Left == hand ? "Left" : "Right";
+
+		// Scale hand when seeking/holding a peg
 		origScale = transform.localScale;
 		seekScale = transform.localScale * 1.5f;
-		pegPulled = new OnPegPulled();
+
+		// Set layer for hitting opponent team
+		foreach(Transform child in transform) {
+    		if(child.tag == "TeamHitter")
+        		child.gameObject.layer = LayerMask.NameToLayer( Globals.TEAM_NAMES[(int)teamId] );
+		}
 	}
 	
 	// Update is called once per frame
@@ -43,9 +52,6 @@ public class HandMan : MonoBehaviour {
 		var horiz = player.GetAxis(hAxis);
      	var vert = player.GetAxis(vAxis);
 		GetComponent<Rigidbody2D>().AddForce(new Vector2(horiz, vert) * handSpeed);
-
-		//Grow Shrink Hand
-
 	}
 
 	void Update () {
@@ -148,8 +154,5 @@ public class HandMan : MonoBehaviour {
 		isHoldingPeg = false;
 		Destroy(this.gameObject.GetComponent<HingeJoint2D>());
 		pegPulled.Invoke(heldPeg);
-
-
-
 	}
 }

@@ -1501,6 +1501,7 @@ Transform:
   m_Children:
   - {fileID: 1730440314}
   - {fileID: 784930003}
+  - {fileID: 1788696954}
   m_Father: {fileID: 1374906672}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1766,6 +1767,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4963601952734428, guid: bf07f3c1c42014b7dad9a0cbe700a61a,
     type: 2}
   m_PrefabInternal: {fileID: 19468731}
+--- !u!1 &965562391
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 965562392}
+  - component: {fileID: 965562393}
+  m_Layer: 0
+  m_Name: Team Hitter
+  m_TagString: TeamHitter
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &965562392
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 965562391}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1214556451}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &965562393
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 965562391}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &970650835
 GameObject:
   m_ObjectHideFlags: 0
@@ -1882,6 +1927,11 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!4 &1214556451 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4908143583523994, guid: 3a6694421d932400487e653ebccf085b,
+    type: 2}
+  m_PrefabInternal: {fileID: 1377427720}
 --- !u!1 &1332146489
 GameObject:
   m_ObjectHideFlags: 0
@@ -1995,6 +2045,11 @@ Prefab:
     - target: {fileID: 4261205377590122, guid: 72e084428b1ca485dbbf7526f92c69b1, type: 2}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114491041710699072, guid: 72e084428b1ca485dbbf7526f92c69b1,
+        type: 2}
+      propertyPath: team
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72e084428b1ca485dbbf7526f92c69b1, type: 2}
@@ -2260,7 +2315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6479fa4f597fb4bb3862ce9cb53abd3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 2
+  team: 1
 --- !u!1001 &1667381138
 Prefab:
   m_ObjectHideFlags: 0
@@ -2388,6 +2443,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4963601952734428, guid: bf07f3c1c42014b7dad9a0cbe700a61a,
     type: 2}
   m_PrefabInternal: {fileID: 1667381138}
+--- !u!1 &1788696953
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1788696954}
+  - component: {fileID: 1788696955}
+  m_Layer: 0
+  m_Name: Team Hitter
+  m_TagString: TeamHitter
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1788696954
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1788696953}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 352848297}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1788696955
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1788696953}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &1845454777
 GameObject:
   m_ObjectHideFlags: 0
