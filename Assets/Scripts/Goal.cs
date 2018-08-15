@@ -40,13 +40,13 @@ public class Goal : MonoBehaviour {
 	}
 
 	IEnumerator Flasher() 
-         {
-             for (int i = 0; i < 2; i++) {
-				 
-              rend.color = scoreColor;
-              yield return new WaitForSeconds(0.1f);
-              rend.color = normalColor;
-              yield return new WaitForSeconds(0.1f);
-             }
-          }
+	{
+		for (int i = 0; i < 2; i++) {
+			
+		rend.color = scoreColor;
+		yield return new WaitForSeconds(0.1f);
+		rend.color = normalColor;
+		yield return new WaitForSeconds(0.1f);
+		}
+	}
 }

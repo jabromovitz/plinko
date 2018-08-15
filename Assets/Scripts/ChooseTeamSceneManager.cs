@@ -8,7 +8,10 @@ public class ChooseTeamSceneManager : MonoBehaviour {
 
 	public RectTransform leftTeam;
 	public RectTransform rightTeam;
+	public Text pressStart;
+	private bool canStartGame = false;
 	public List<Image> cons;
+	private Coroutine startFlashCo;
 	private List<Dictionary<Globals.Team, Vector3>> controlPositions = new List<Dictionary<Globals.Team, Vector3>>();
 	private List<Globals.Team> controlPosition = new List<Globals.Team>();
 
@@ -34,6 +37,9 @@ public class ChooseTeamSceneManager : MonoBehaviour {
 
 			controlPositions.Add(conPos);
 		}
+
+		// Disable Press Start text
+		pressStart.enabled = false;
 		
 	}
 
@@ -54,6 +60,7 @@ public class ChooseTeamSceneManager : MonoBehaviour {
 		foreach (Rewired.Player p in ReInput.players.GetPlayers()) {
 			
 			if(p.GetButtonDown("D-Left")) {
+
 				if(controlPosition[p.id] == Globals.Team.RIGHT) {
 					controlPosition[p.id] = Globals.Team.NONE;
 					cons[p.id].rectTransform.SetPositionAndRotation(controlPositions[p.id][Globals.Team.NONE] , Quaternion.identity);
@@ -62,15 +69,19 @@ public class ChooseTeamSceneManager : MonoBehaviour {
 					controlPosition[p.id] = Globals.Team.LEFT;
 					cons[p.id].rectTransform.SetPositionAndRotation(controlPositions[p.id][Globals.Team.LEFT] , Quaternion.identity);
 				}
+				CanStartGameCheck();
+
 			} else if (p.GetButtonDown("D-Right")) {
+
 				if(controlPosition[p.id] == Globals.Team.LEFT) {
 					controlPosition[p.id] = Globals.Team.NONE;
 					cons[p.id].rectTransform.SetPositionAndRotation(controlPositions[p.id][Globals.Team.NONE] , Quaternion.identity);
 
-				} else if(controlPosition[p.id] == Globals.Team.NONE) {
+				} else if(controlPosition[p.id] == Globals.Team.NONE && CanSelectTeam(Globals.Team.RIGHT)) {
 					controlPosition[p.id] = Globals.Team.RIGHT;
 					cons[p.id].rectTransform.SetPositionAndRotation(controlPositions[p.id][Globals.Team.RIGHT] , Quaternion.identity);
 				}
+				CanStartGameCheck();
 			}
 		}
 	}
@@ -87,5 +98,44 @@ public class ChooseTeamSceneManager : MonoBehaviour {
 		}
 
 		return teamCount < halfPlayers;
+	}
+
+	private void CanStartGameCheck () {
+
+		// If there is at least one person per team
+		// we can start a game
+
+		bool leftTeam = false;
+		bool rightTeam = false;
+
+		foreach (Globals.Team t in controlPosition) {
+			if (t == Globals.Team.LEFT) 
+				leftTeam = true;
+			else if (t == Globals.Team.RIGHT) 
+				rightTeam = true;
+		}
+
+		if (leftTeam && rightTeam) {
+			canStartGame = true;
+			startFlashCo = StartCoroutine(PressStartBlink());
+		} else {
+			canStartGame = false;
+			if (startFlashCo != null) {
+				StopCoroutine(startFlashCo);
+				pressStart.enabled = false;
+			}
+		}
+
+	}
+
+	IEnumerator PressStartBlink() 
+	{
+		while(true) {
+			print("ppp");
+			pressStart.enabled = true;
+			yield return new WaitForSeconds(0.75f);
+			pressStart.enabled = false;
+			yield return new WaitForSeconds(0.75f);
+		}
 	}
 }
