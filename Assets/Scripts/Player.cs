@@ -18,7 +18,7 @@ public class Player : MonoBehaviour {
 		// }
 	}
 
-	public void Init (int playerId, Globals.Team teamId) {
+	public void Init (int playerId, Globals.Team teamId, Sprite bodySprite) {
 		
 		this.playerID = playerId;
 		this.teamId = teamId;
@@ -27,5 +27,12 @@ public class Player : MonoBehaviour {
 				player = ReInput.players.GetPlayer(playerID);
 				hand.player = player;
 		}
+
+		foreach (Transform child in transform) {
+			if (child.tag == "Body") {
+				child.GetComponent<SpriteRenderer>().sprite = bodySprite;
+			} 
+		}
+
 	}
 }

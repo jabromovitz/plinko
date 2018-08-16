@@ -7,6 +7,7 @@ public class GameSceneManager : MonoBehaviour {
 
 
 	public GameObject playerPrefab;
+	public List<Sprite> faceSprites;
 	public const int BALLS_PER_DROP = 50;
 	public const float BALL_DROP_FREQ = 1.0f;
 	public GameObject puckPrefab;
@@ -55,7 +56,7 @@ public class GameSceneManager : MonoBehaviour {
 										new Vector3(Random.Range(-10f, 10f), 0f, 0f),
 										Quaternion.identity);
 			Player playerScript = player.GetComponent<Player>();
-			playerScript.Init(i, teams[i]);
+			playerScript.Init(i, teams[i], faceSprites[(int)teams[i]]);
 		}
 	}
 	

@@ -1760,6 +1760,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 1827005352795418, guid: 3a6694421d932400487e653ebccf085b,
     type: 2}
+  faceSprites:
+  - {fileID: 21300000, guid: c2fed9679ab6b4aebb2ff5bbee546e95, type: 3}
+  - {fileID: 21300000, guid: c6c4259c3e1f34877ad207943135995c, type: 3}
+  - {fileID: 21300000, guid: 9be377b455d514d12a1a80588c7ccd57, type: 3}
   puckPrefab: {fileID: 1329511361459790, guid: 5563382bff25e4148828203dd3a9a403, type: 2}
   leftScoreText: {fileID: 156967620}
   rightScoreText: {fileID: 1332146491}
