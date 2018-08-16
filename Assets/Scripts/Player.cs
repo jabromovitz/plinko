@@ -12,6 +12,17 @@ public class Player : MonoBehaviour {
 
 	void Start()
 	{
+		// foreach (HandMan hand in GetComponentsInChildren<HandMan>()) {
+		// 		player = ReInput.players.GetPlayer(playerID);
+		// 		hand.player = player;
+		// }
+	}
+
+	public void Init (int playerId, Globals.Team teamId) {
+		
+		this.playerID = playerId;
+		this.teamId = teamId;
+
 		foreach (HandMan hand in GetComponentsInChildren<HandMan>()) {
 				player = ReInput.players.GetPlayer(playerID);
 				hand.player = player;

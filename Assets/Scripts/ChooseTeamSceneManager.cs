@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Rewired;
+using UnityEngine.SceneManagement;
 
 public class ChooseTeamSceneManager : MonoBehaviour {
 
@@ -59,6 +60,13 @@ public class ChooseTeamSceneManager : MonoBehaviour {
 	
 		foreach (Rewired.Player p in ReInput.players.GetPlayers()) {
 			
+			if ( p.id == 0 && p.GetButtonDown("Start") && canStartGame ) {
+				
+				// Start Game
+				GameDataManager.instance.playerTeams = controlPosition;
+				SceneManager.LoadScene("Game");
+			}
+
 			if(p.GetButtonDown("D-Left")) {
 
 				if(controlPosition[p.id] == Globals.Team.RIGHT) {
@@ -131,7 +139,6 @@ public class ChooseTeamSceneManager : MonoBehaviour {
 	IEnumerator PressStartBlink() 
 	{
 		while(true) {
-			print("ppp");
 			pressStart.enabled = true;
 			yield return new WaitForSeconds(0.75f);
 			pressStart.enabled = false;

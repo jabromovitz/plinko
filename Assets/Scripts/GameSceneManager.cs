@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SceneManager : MonoBehaviour {
+public class GameSceneManager : MonoBehaviour {
 
+
+	public GameObject playerPrefab;
 	public const int BALLS_PER_DROP = 50;
 	public const float BALL_DROP_FREQ = 1.0f;
 	public GameObject puckPrefab;
@@ -29,9 +31,32 @@ public class SceneManager : MonoBehaviour {
 	}
 	
 	void Start () {
+
+		CreatePlayers();
+		Countdown();
 		Goal.OnGoalScored += GoalScored;
 		StartCoroutine(MoveBallDropper());
 		
+	}
+
+	private void Countdown () {
+		//TODO: Countdown animation then launch
+		// The players
+	}
+
+	private void CreatePlayers () {
+
+		// Create Players
+		List<Globals.Team> teams = GameDataManager.instance.playerTeams;
+		for (int i = 0; i < teams.Count; i++) {
+			
+			GameObject player = 
+				(GameObject) Instantiate(playerPrefab,
+										new Vector3(Random.Range(-10f, 10f), 0f, 0f),
+										Quaternion.identity);
+			Player playerScript = player.GetComponent<Player>();
+			playerScript.Init(i, teams[i]);
+		}
 	}
 	
 	// Update is called once per frame
