@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameSceneManager : MonoBehaviour {
 
 
 	public GameObject playerPrefab;
 	public List<Sprite> faceSprites;
+	public Text countdownText;
+	public Text clock;
 	public const int BALLS_PER_DROP = 50;
 	public const float BALL_DROP_FREQ = 1.0f;
 	public GameObject puckPrefab;
@@ -22,6 +25,7 @@ public class GameSceneManager : MonoBehaviour {
 	private float ballDropperSpeed = 0f;
 	private const float MAX_BALL_DROPPER_SPEED = 30;
 	private const float BALL_DROPPER_WAIT_TIME = 3.0f;
+	private int gameTime = 1 * 60;
 
 	/// <summary>
 	/// Awake is called when the script instance is being loaded.
@@ -29,20 +33,74 @@ public class GameSceneManager : MonoBehaviour {
 	void Awake()
 	{
 		HandMan.pegPulled.AddListener(RemovePeg);
+		countdownText.enabled = false;
 	}
 	
 	void Start () {
 
-		CreatePlayers();
-		Countdown();
+		clock.text = string.Format("{0:0}:{1:00}", Mathf.Floor(gameTime/60), gameTime % 60);
+		StartCoroutine( Countdown() );
 		Goal.OnGoalScored += GoalScored;
-		StartCoroutine(MoveBallDropper());
+		//StartCoroutine(MoveBallDropper());
 		
 	}
 
-	private void Countdown () {
-		//TODO: Countdown animation then launch
-		// The players
+	IEnumerator ClockTick () {
+
+		while(gameTime > 0) {
+
+			yield return new WaitForSeconds(1.0f);
+			gameTime--;
+			clock.text = string.Format("{0:0}:{1:00}", Mathf.Floor(gameTime/60), gameTime % 60);
+		}
+
+		StartCoroutine(GameOver());
+	}
+
+	IEnumerator GameOver () {
+
+		// Game over text
+		Vector3 origTextScale = countdownText.rectTransform.localScale;
+		countdownText.text = "GAME OVER";
+		countdownText.enabled = true;
+		yield return StartCoroutine(Helpers.ScaleText(countdownText, 1f, 3f, 0.75f));
+		yield return new WaitForSeconds(0.75f);
+		countdownText.enabled = false;
+		countdownText.rectTransform.localScale = origTextScale;
+
+		// To Game Over scene	
+		GameDataManager.instance.leftScore = leftScore;
+		GameDataManager.instance.rightScore = rightScore;
+		SceneManager.LoadScene("GameOver");
+	}
+	IEnumerator Countdown () {
+		
+		Vector3 origTextScale = countdownText.rectTransform.localScale;
+		yield return new WaitForSeconds(1.0f);
+
+		for (int i = 3; i >= 1; i--) {
+
+			countdownText.text = i.ToString();
+			countdownText.enabled = true;
+			yield return StartCoroutine(Helpers.ScaleText(countdownText, 1f, 3f, 0.3f));
+			yield return new WaitForSeconds(1f);
+			countdownText.enabled = false;
+			countdownText.rectTransform.localScale = origTextScale;
+		}
+
+		//Start!
+		countdownText.text = "GO!";
+		countdownText.enabled = true;
+		yield return StartCoroutine(Helpers.ScaleText(countdownText, 1f, 3f, 0.75f));
+		yield return new WaitForSeconds(0.75f);
+		countdownText.enabled = false;
+		countdownText.rectTransform.localScale = origTextScale;
+
+		// Start game stuff, prob move to its on method
+		//CreatePlayers();
+		//StartCoroutine(MoveBallDropper());
+		StartCoroutine(ClockTick());
+
 	}
 
 	private void CreatePlayers () {
@@ -51,12 +109,14 @@ public class GameSceneManager : MonoBehaviour {
 		List<Globals.Team> teams = GameDataManager.instance.playerTeams;
 		for (int i = 0; i < teams.Count; i++) {
 			
-			GameObject player = 
-				(GameObject) Instantiate(playerPrefab,
-										new Vector3(Random.Range(-10f, 10f), 0f, 0f),
-										Quaternion.identity);
-			Player playerScript = player.GetComponent<Player>();
-			playerScript.Init(i, teams[i], faceSprites[(int)teams[i]]);
+			if (teams[i] != Globals.Team.NONE) {
+				GameObject player = 
+					(GameObject) Instantiate(playerPrefab,
+											new Vector3(Random.Range(-10f, 10f), 0f, 0f),
+											Quaternion.identity);
+				Player playerScript = player.GetComponent<Player>();
+				playerScript.Init(i, teams[i], faceSprites[(int)teams[i]]);
+			}
 		}
 	}
 	

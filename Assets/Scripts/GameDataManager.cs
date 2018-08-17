@@ -7,9 +7,14 @@ using UnityEngine.SceneManagement;
 public class GameDataManager : MonoBehaviour 
 {
     /// <summary>Static reference to the instance of our DataManager</summary>
-    public static GameDataManager instance;
+	public static GameDataManager instance;
+	
+    // Team Choose info
+	public List<Globals.Team> playerTeams;
 
-    public List<Globals.Team> playerTeams;
+	// Game Over info
+	public int leftScore;
+	public int rightScore;
 
     /// <summary>Awake is called when the script instance is being loaded.</summary>
     void Awake()

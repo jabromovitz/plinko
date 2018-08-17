@@ -21,7 +21,7 @@ public class SceneSetup : MonoBehaviour {
 	private void AddBG () {
 
 		sr = gameObject.AddComponent<SpriteRenderer>();
-		sr.color = new Color(0.3f, 0.7f, 0.1f, 1.0f);
+		//sr.color = new Color(0.3f, 0.7f, 0.1f, 1.0f);
 		sr.sortingLayerName = "Background";
 		sr.sprite = bg;
 
@@ -38,15 +38,18 @@ public class SceneSetup : MonoBehaviour {
 
 	private void SetupPegs () {
 
+		float wH = Camera.main.orthographicSize;
+		float wW = wH / Screen.height * Screen.width;
+
 		int horizPegs = 12;
 		int vertPegs = 6;
-		float hSpacing = 1/(horizPegs+1.0f);
-		float vSpacing = 1/(vertPegs+1.0f);
+		float hSpacing = wW * 1/(horizPegs+1.0f);
+		float vSpacing = wH * 1/(vertPegs+1.0f);
 
 		for(int i = 1; i <= vertPegs; i++) {
 			int shiftPeg = i % 2 == 0 ? 0 : 1;
 			for(int j = 1; j <= horizPegs; j++) {
-				Vector3 pos = new Vector3(-0.5f - (0.5f * shiftPeg * hSpacing) + j * hSpacing, -0.5f + i * vSpacing, 0f);
+				Vector3 pos = new Vector3(-0.5f * wW - (0.5f * shiftPeg * hSpacing) + j * hSpacing, -0.5f * wH + i * vSpacing, 0f);
 				GameObject peg = (GameObject) Instantiate(pegPreFab, Vector3.zero, Quaternion.identity);
 				peg.transform.parent = transform;
 				peg.transform.localPosition = pos;
