@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using Rewired;
+
 
 /// <summary>Manages data for persistance between levels.</summary>
 public class GameDataManager : MonoBehaviour 
@@ -15,6 +17,9 @@ public class GameDataManager : MonoBehaviour
 	// Game Over info
 	public int leftScore;
 	public int rightScore;
+
+	public int conConnected = 0;
+
 
     /// <summary>Awake is called when the script instance is being loaded.</summary>
     void Awake()
@@ -37,7 +42,14 @@ public class GameDataManager : MonoBehaviour
     }
 
 	void Start() {
+
+		 ReInput.ControllerConnectedEvent += OnControllerConnected;
         //Load Choose Team Scene
-		SceneManager.LoadScene("ChooseTeam");
+		SceneManager.LoadScene("Start");
     }
+
+	private void OnControllerConnected(ControllerStatusChangedEventArgs args) {
+			
+		conConnected++;
+	}
 }

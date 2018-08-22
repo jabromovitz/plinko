@@ -39,20 +39,37 @@ public class ChooseTeamSceneManager : MonoBehaviour {
 			controlPositions.Add(conPos);
 		}
 
+		// Init controll icons, etc
+		InitConnectedControllers();
+
+		// TODO: check for new cons added
+
 		// Disable Press Start text
 		pressStart.enabled = false;
 		
 	}
 
-	private void OnControllerConnected(ControllerStatusChangedEventArgs args) {
-			
-		Image tmp = cons[conConnected];
- 		Color c = tmp.color;
-		c.a = 1.0f;
-		tmp.color = c;
-		conConnected++;
-		controlPosition.Add(Globals.Team.NONE);
+	private void InitConnectedControllers () {
+		
+		for (int i = 0; i < GameDataManager.instance.conConnected; i++) {
+		
+			Image tmp = cons[conConnected];
+			Color c = tmp.color;
+			c.a = 1.0f;
+			tmp.color = c;
+			conConnected++;
+			controlPosition.Add(Globals.Team.NONE);
+		}
+	}
 
+	private void OnControllerConnected (ControllerStatusChangedEventArgs args) {
+	
+		Image tmp = cons[conConnected];
+			Color c = tmp.color;
+			c.a = 1.0f;
+			tmp.color = c;
+			conConnected++;
+			controlPosition.Add(Globals.Team.NONE);
 	}
 	
 	// Update is called once per frame
@@ -109,7 +126,7 @@ public class ChooseTeamSceneManager : MonoBehaviour {
 	}
 
 	private void CanStartGameCheck () {
-
+		print("canstart?");
 		// If there is at least one person per team
 		// we can start a game
 
@@ -123,7 +140,7 @@ public class ChooseTeamSceneManager : MonoBehaviour {
 				rightTeam = true;
 		}
 
-		if (leftTeam && rightTeam) {
+		if (leftTeam && rightTeam && !canStartGame) {
 			canStartGame = true;
 			startFlashCo = StartCoroutine(PressStartBlink());
 		} else {

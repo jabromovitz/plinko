@@ -25,7 +25,7 @@ public class GameSceneManager : MonoBehaviour {
 	private float ballDropperSpeed = 0f;
 	private const float MAX_BALL_DROPPER_SPEED = 30;
 	private const float BALL_DROPPER_WAIT_TIME = 3.0f;
-	private int gameTime = 1 * 60;
+	private int gameTime =  3 * 60;
 
 	/// <summary>
 	/// Awake is called when the script instance is being loaded.
@@ -61,7 +61,7 @@ public class GameSceneManager : MonoBehaviour {
 
 		// Game over text
 		Vector3 origTextScale = countdownText.rectTransform.localScale;
-		countdownText.text = "GAME OVER";
+		countdownText.text = "FINISH!";
 		countdownText.enabled = true;
 		yield return StartCoroutine(Helpers.ScaleText(countdownText, 1f, 3f, 0.75f));
 		yield return new WaitForSeconds(0.75f);
@@ -97,8 +97,8 @@ public class GameSceneManager : MonoBehaviour {
 		countdownText.rectTransform.localScale = origTextScale;
 
 		// Start game stuff, prob move to its on method
-		//CreatePlayers();
-		//StartCoroutine(MoveBallDropper());
+		CreatePlayers();
+		StartCoroutine(MoveBallDropper());
 		StartCoroutine(ClockTick());
 
 	}
