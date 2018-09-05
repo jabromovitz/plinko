@@ -15,6 +15,7 @@ public class Ball : MonoBehaviour {
 	void Update () {
 		
 	}
+	
 
 	public void SetTeam(Globals.Team playerTeam) {
 		team = playerTeam;

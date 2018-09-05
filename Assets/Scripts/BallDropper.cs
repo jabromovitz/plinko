@@ -33,7 +33,7 @@ public class BallDropper : MonoBehaviour {
 
 			//Stop dropper from drifting;
 			ballDropperSpeed = 0f;
-
+		
 			yield return StartCoroutine( DropPucks() );
 
 			yield return new WaitForSeconds(Globals.BALL_DROPPER_WAIT_TIME);
