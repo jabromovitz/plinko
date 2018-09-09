@@ -25,6 +25,9 @@ public class HandMan : MonoBehaviour {
 	 private Coroutine pullPegCo;
 	 public static OnPegPulled pegPulled = new OnPegPulled();
 	 private GameObject heldPeg;
+
+	 public Sprite openHand;
+	 public Sprite closedHand;
 	 
 	// Use this for initialization
 	void Start () {
@@ -44,6 +47,9 @@ public class HandMan : MonoBehaviour {
     		if(child.tag == "TeamHitter")
         		child.gameObject.layer = LayerMask.NameToLayer( Globals.TEAM_NAMES[(int)teamId] );
 		}
+
+		// Add open hand sprite to renderer
+		GetComponent<SpriteRenderer>().sprite = openHand;
 	}
 	
 	// Update is called once per frame
@@ -60,6 +66,8 @@ public class HandMan : MonoBehaviour {
 		if(isHoldingPeg && player.GetButtonUp(grab)) {
 			isHoldingPeg = false;
 			Destroy(this.gameObject.GetComponent<HingeJoint2D>());
+			// Open hand sprite
+			GetComponent<SpriteRenderer>().sprite = openHand;;
 		} else if (!isHoldingPeg && player.GetButtonDown(grab)) {
 			StartPegSeek(FindCloestPeg());
 		} else if (!isHoldingPeg && player.GetButtonUp(grab)) {
@@ -93,6 +101,9 @@ public class HandMan : MonoBehaviour {
 				HingeJoint2D hinge = gameObject.AddComponent<HingeJoint2D>() as HingeJoint2D;
 				heldPeg = other.gameObject;
 				hinge.connectedBody = other.gameObject.GetComponent<Rigidbody2D>();
+				
+				// Close hand sprite
+				GetComponent<SpriteRenderer>().sprite = closedHand;
 			}
 		} 
 	}
@@ -115,8 +126,8 @@ public class HandMan : MonoBehaviour {
 	}
 
 	Vector3 FindCloestPeg() {
-		while (true) {
-			float closestPegDist = float.MaxValue;;
+		//while (true) {
+			float closestPegDist = float.MaxValue;
 			GameObject closestPeg = null;
 
 			var hitColliders = Physics2D.OverlapCircleAll(gameObject.transform.position, 2);
@@ -133,7 +144,7 @@ public class HandMan : MonoBehaviour {
 				}
     		}
 			return closestPeg.transform.position;
-		}
+		//}
 	}
 
 	public void StartPegSeek (Vector3 target) {
